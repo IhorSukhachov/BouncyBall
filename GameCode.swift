@@ -9,7 +9,8 @@ at the top level of the file (outside any function). You can't write any other k
 for example if statements and for loops, at the top level; they have to be written inside
 of a function.
 */
-
+let circle = OvalShape(width: 150, height: 150)
 func setup() {
-    
+    circle.position = Point(x: 250, y: 400)
+    scene.add(circle)
 }
