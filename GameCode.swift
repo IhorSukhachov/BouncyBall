@@ -28,6 +28,11 @@ fileprivate func setupBall() {
     ball.hasPhysics = true
     ball.fillColor = .blue
     ball.onCollision = ballCollided(with:)
+    ball.stopAllMotion()
+    ball.isDraggable = false
+    scene.trackShape(ball)
+    ball.onExitedScene = ballExitedScene
+    ball.onTapped = resetGame
 }
 
 fileprivate func setupBarrier() {
@@ -63,6 +68,15 @@ func ballCollided(with otherShape: Shape) {
     otherShape.fillColor = .green
 }
 
+func ballExitedScene() {
+    barrier.isDraggable = true
+    
+}
+
+func resetGame() {
+    ball.position = Point(x: 0, y: -80)
+}
+
 func setup() {
     setupBall()
 
@@ -71,8 +85,11 @@ func setup() {
     setupFunnel()
     
     setupTarget()
+    
+    resetGame()
 }
 
 func dropBall() {
     ball.position = funnel.position
+    barrier.isDraggable = false
 }
