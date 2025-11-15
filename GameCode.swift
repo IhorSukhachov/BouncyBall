@@ -11,13 +11,11 @@ of a function.
 */
 let ball = OvalShape(width: 40, height: 40)
 var barriers: [Shape] = []
+var targets: [Shape] = []
 
 
 let funnelPoints = [Point(x: 0, y: 50), Point(x: 80, y: 50), Point(x: 60, y: 0), Point(x: 20, y: 0)]
 let funnel = PolygonShape(points: funnelPoints)
-
-let targetPoints = [Point(x: 10, y: 0), Point(x: 0, y: 10), Point(x: 10, y: 20), Point(x: 20, y: 10)]
-let target = PolygonShape(points: targetPoints)
 
 fileprivate func setupBall() {
     ball.position = Point(x: 250, y: 400)
@@ -50,8 +48,17 @@ fileprivate func setupFunnel() {
     funnel.fillColor = .gray
 }
 
-func setupTarget() {
-    target.position = Point(x: 200, y: 400)
+func addTarget(at position: Point) {
+    let targetPoints: [Point] = [
+        Point(x: 10, y: 0),
+        Point(x: 0, y: 10),
+        Point(x: 10, y: 20),
+        Point(x: 20, y: 10)
+    ]
+    
+    let target = PolygonShape(points: targetPoints)
+    targets.append(target)
+    target.position = position
     target.hasPhysics = true
     target.isImmobile = true
     target.isImpermeable = true
@@ -87,9 +94,20 @@ func setup() {
 
     setupFunnel()
     
-    setupTarget()
+    addTarget(at: Point(x: 150, y: 400))
+    
+    addBarrier(at: Point(x: 175, y: 100), width: 80, height: 25, angle: 0.1)
+    addBarrier(at: Point(x: 100, y: 150), width: 30, height: 15, angle: -0.2)
+    addBarrier(at: Point(x: 325, y: 150), width: 100, height: 25, angle: 0.03)
+
+    addTarget(at: Point(x: 184, y: 563))
+    addTarget(at: Point(x: 238, y: 624))
+    addTarget(at: Point(x: 269, y: 453))
+    addTarget(at: Point(x: 213, y: 348))
+    addTarget(at: Point(x: 113, y: 267))
     
     resetGame()
+    
 }
 
 func dropBall() {
