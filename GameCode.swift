@@ -89,9 +89,9 @@ func ballExitedScene() {
         
     }
     if hitTargets == targets.count {
-        print("Won game!")
+        scene.presentAlert(text: "You won!", completion: alertDismissed)
     }
-    scene.presentAlert(text: "You won!", completion: alertDismissed)
+   
 }
 
 func resetGame() {
