@@ -33,6 +33,7 @@ fileprivate func setupBall() {
     scene.trackShape(ball)
     ball.onExitedScene = ballExitedScene
     ball.onTapped = resetGame
+    ball.bounciness = 0.6
 }
 
 fileprivate func setupBarrier() {
@@ -40,6 +41,7 @@ fileprivate func setupBarrier() {
     barrier.hasPhysics = true
     scene.add(barrier)
     barrier.isImmobile = true
+    barrier.angle = 0.1
 }
 
 fileprivate func setupFunnel() {
