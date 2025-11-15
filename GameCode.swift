@@ -19,11 +19,15 @@ let barrier = PolygonShape(points: barrierPoints)
 let funnelPoints = [Point(x: 0, y: 50), Point(x: 80, y: 50), Point(x: 60, y: 0), Point(x: 20, y: 0)]
 let funnel = PolygonShape(points: funnelPoints)
 
+let targetPoints = [Point(x: 10, y: 0), Point(x: 0, y: 10), Point(x: 10, y: 20), Point(x: 20, y: 10)]
+let target = PolygonShape(points: targetPoints)
+
 fileprivate func setupBall() {
     ball.position = Point(x: 250, y: 400)
     scene.add(ball)
     ball.hasPhysics = true
     ball.fillColor = .blue
+    ball.onCollision = ballCollided(with:)
 }
 
 fileprivate func setupBarrier() {
@@ -40,12 +44,33 @@ fileprivate func setupFunnel() {
     funnel.fillColor = .gray
 }
 
+func setupTarget() {
+    target.position = Point(x: 200, y: 400)
+    target.hasPhysics = true
+    target.isImmobile = true
+    target.isImpermeable = true
+    target.fillColor = .yellow
+    scene.add(target)
+    target.name = "target"
+    
+}
+
+
+func ballCollided(with otherShape: Shape) {
+    if otherShape.name != "target" {
+        return
+    }
+    otherShape.fillColor = .green
+}
+
 func setup() {
     setupBall()
 
     setupBarrier()
 
     setupFunnel()
+    
+    setupTarget()
 }
 
 func dropBall() {
