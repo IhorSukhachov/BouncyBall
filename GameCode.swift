@@ -10,11 +10,8 @@ for example if statements and for loops, at the top level; they have to be writt
 of a function.
 */
 let ball = OvalShape(width: 40, height: 40)
-let barrierWidth = 300.0
-let barrierHeight = 25.0
+var barriers: [Shape] = []
 
-let barrierPoints = [Point(x:0, y: 0), Point(x: 0, y: barrierHeight), Point(x: barrierWidth, y: barrierHeight), Point(x: barrierWidth, y: 0)]
-let barrier = PolygonShape(points: barrierPoints)
 
 let funnelPoints = [Point(x: 0, y: 50), Point(x: 80, y: 50), Point(x: 60, y: 0), Point(x: 20, y: 0)]
 let funnel = PolygonShape(points: funnelPoints)
@@ -28,7 +25,6 @@ fileprivate func setupBall() {
     ball.hasPhysics = true
     ball.fillColor = .blue
     ball.onCollision = ballCollided(with:)
-    ball.stopAllMotion()
     ball.isDraggable = false
     scene.trackShape(ball)
     ball.onExitedScene = ballExitedScene
@@ -36,12 +32,15 @@ fileprivate func setupBall() {
     ball.bounciness = 0.6
 }
 
-fileprivate func setupBarrier() {
-    barrier.position = Point(x: 200, y: 150)
+fileprivate func addBarrier(at position: Point, width: Double, height: Double, angle: Double) {
+    let barrierPoints = [Point(x: 0, y: 0), Point(x: 0, y: height), Point(x: width, y: height), Point(x: width, y: 0)]
+    let barrier = PolygonShape(points: barrierPoints)
+    barriers.append(barrier)
+    barrier.position = position
     barrier.hasPhysics = true
     scene.add(barrier)
     barrier.isImmobile = true
-    barrier.angle = 0.1
+    barrier.angle = angle
 }
 
 fileprivate func setupFunnel() {
@@ -71,7 +70,9 @@ func ballCollided(with otherShape: Shape) {
 }
 
 func ballExitedScene() {
-    barrier.isDraggable = true
+    for barrier in barriers {
+        barrier.isDraggable = true
+    }
     
 }
 
@@ -82,7 +83,7 @@ func resetGame() {
 func setup() {
     setupBall()
 
-    setupBarrier()
+    addBarrier(at: Point(x: 200, y: 150), width: 80, height: 25, angle: 0.2)
 
     setupFunnel()
     
@@ -93,5 +94,8 @@ func setup() {
 
 func dropBall() {
     ball.position = funnel.position
-    barrier.isDraggable = false
+    ball.stopAllMotion()
+    for barrier in barriers {
+        barrier.isDraggable = false
+    }
 }
