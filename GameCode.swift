@@ -81,6 +81,17 @@ func ballExitedScene() {
         barrier.isDraggable = true
     }
     
+    var hitTargets = 0
+    for target in targets {
+        if target.fillColor == .green {
+            hitTargets += 1
+        }
+        
+    }
+    if hitTargets == targets.count {
+        print("Won game!")
+    }
+    scene.presentAlert(text: "You won!", completion: alertDismissed)
 }
 
 func resetGame() {
@@ -110,10 +121,17 @@ func setup() {
     
 }
 
+func alertDismissed() {
+    
+}
+
 func dropBall() {
     ball.position = funnel.position
     ball.stopAllMotion()
     for barrier in barriers {
         barrier.isDraggable = false
+    }
+    for target in targets {
+        target.fillColor = .yellow
     }
 }
